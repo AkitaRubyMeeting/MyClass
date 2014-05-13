@@ -11,9 +11,8 @@ def get_akitam_events
   events = []
 
   # イベントは.veventで取得できる
-  doc.search(".vevent").each do |event_info|
+  doc.search(".vevent").map do |event_info|
     event = {}
-    events << event
   
     # 日付は.event_dateで取得
     a = event_info
@@ -26,9 +25,8 @@ def get_akitam_events
     # イベント名は.event_nameで取得
     event[:name] = event_info
                     .search(".event_name").inner_text
-            
+    event
   end
-  events
 end
 
 
@@ -46,5 +44,4 @@ def make_ical events
 end
 
 s = make_ical get_akitam_events
-p s
 File.open("akitam.ics", "w"){|f| f.write(s)}
