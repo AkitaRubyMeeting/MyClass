@@ -8,8 +8,6 @@ def get_akitam_events
   url = "http://kokucheese.com/main/host/Akita.m"
   doc = Nokogiri::HTML(open(url))
 
-  events = []
-
   # イベントは.veventで取得できる
   doc.search(".vevent").map do |event_info|
     event = {}
