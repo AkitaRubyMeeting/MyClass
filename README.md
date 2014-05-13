@@ -131,3 +131,14 @@ end
 s = make_ical get_akitam_events
 File.open("akitam.ics", "w"){|f| f.write(s)}
 ```
+
+## 実行
+
+```sh
+$ ruby myclass2ical.rb
+```
+
+akitam.icsが生成される。
+ダブルクリックでiCalに反映される。
+
+将来的にはサーバー経由で取得できる様にする。
