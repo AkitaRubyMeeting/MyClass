@@ -31,7 +31,7 @@ end
 def make_ical events
   cal = Icalendar::Calendar.new
   events.each do |event|
-    e = cal.event
+    e = cal.event  # 新規eventがcalに追加され、それが返される
     e.dtstart = Icalendar::Values::Date.new(event[:date].strftime("%Y%m%d"))
     e.dtend = Icalendar::Values::Date.new(event[:date].strftime("%Y%m%d"))
     e.summary = event[:name]
