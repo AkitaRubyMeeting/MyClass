@@ -43,3 +43,13 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+# Haml
+gem 'haml-rails'
+
+# Bootstrap
+gem "therubyracer"
+gem "less-rails"
+gem "twitter-bootstrap-rails"
+gem 'less-rails-bootstrap'
+
