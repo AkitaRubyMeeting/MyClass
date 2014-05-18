@@ -53,3 +53,9 @@ gem "less-rails"
 gem "twitter-bootstrap-rails"
 gem 'less-rails-bootstrap'
 
+
+gem "nokogiri", "1.6.1"
+gem "icalendar"
+
+
+ruby "2.0.0"
