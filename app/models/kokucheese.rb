@@ -1,7 +1,7 @@
 class Kokucheese
 
   attr_reader :url
-  attr_reader :title, :ics, :index_url
+  attr_reader :title, :ics, :index_url, :prefecture, :description
   
   def initialize url
     @url = url
@@ -11,7 +11,7 @@ class Kokucheese
   def benkyoukai
     b = Benkyoukai.site(Benkyoukai::KOKUCHEESE).title(title).first
     unless b
-      b = Benkyoukai.create(site:Benkyoukai::KOKUCHEESE, title:title, source_url:index_url, ics:ics)
+      b = Benkyoukai.create(site:Benkyoukai::KOKUCHEESE, title:title, source_url:index_url, ics:ics, prefecture:prefecture)
     end
     b
   end
@@ -29,6 +29,11 @@ class Kokucheese
     # イベントは.veventで取得できる
     doc.search(".vevent").map do |event_info|
     
+      detail_url = event_info
+          .search("a.article.summary").first["href"]
+#p detail_url
+#      get_event detail_url
+
       # 日付は.event_dateで取得
       a = event_info
           .search(".event_date").inner_text.gsub("\r\n", "")
@@ -36,12 +41,25 @@ class Kokucheese
           .flatten
           .map{|e| e.to_i}
       date = Date.new(*a)
+      
   
-      # イベント名は.event_nameで取得
-      name = event_info
-                    .search(".event_name").inner_text
+      name = event_info.search(".event_name").inner_text
+      @prefecture = event_info.search("td.event_prefecture.location").inner_text
+      description = event_info.search("td.event_description").inner_text.gsub("__", "")
 
-      { date:date, name:name }
+      { date:date, name:name, description:description, prefecture:@prefecture }
+    end
+  end
+  
+  def get_event url
+    doc = Nokogiri::HTML(open(url))
+#p doc
+    doc.search("table.indexTable").each do |table|
+#p table
+      table.search("tr").each do |tr|
+        p tr.search("th").inner_text
+        p tr.search("td").inner_text
+      end
     end
   end
   
@@ -65,7 +83,7 @@ class Kokucheese
       e.dtstart = Icalendar::Values::Date.new(event[:date].strftime("%Y%m%d"))
       e.dtend = Icalendar::Values::Date.new(event[:date].strftime("%Y%m%d"))
       e.summary = event[:name]
-      e.description = event[:name]
+      e.description = event[:description]
       e.ip_class = "PRIVATE"
     end
     @ics = cal.to_ical
