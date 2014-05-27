@@ -20,10 +20,10 @@ class Kokucheese
 
   def analize
     @index_url, @title = get_index_url
-    make_ical get_akitam_events
+    make_ical get_events
   end
   
-  def get_akitam_events
+  def get_events
     doc = Nokogiri::HTML(open(index_url))
 
     # イベントは.veventで取得できる
@@ -91,24 +91,3 @@ class Kokucheese
   
 
 end
-
-__END__
-
-
-def scan_group
-  #url = "http://kokucheese.com/main/host/Akita.m"
-  url = "http://kokucheese.com/main/calendar/"
-  doc = Nokogiri::HTML(open(url))
-
-  doc.search("a").each do |a|
-    url = a["href"]
-if /http:\/\/kokucheese.com\/main\/host\/(.+)/ =~ url
-p  url, URI.unescape($1)#.force_encoding("utf-8")
-end
-  end
-
-end
-
-scan_group
-#s = make_ical get_akitam_events
-#File.open("akitam.ics", "w"){|f| f.write(s)}
