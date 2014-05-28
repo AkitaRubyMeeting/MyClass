@@ -16,15 +16,19 @@ class Benkyoukai < ActiveRecord::Base
     
     def benkyoukai_with_site_and_title site, title
       b = nil
-      unless site.blank? || title.blank?
-        b = Benkyoukai.site(site).title(title).first
-        unless b
-          case site
-          when KOKUCHEESE
-            k = Kokucheese.new "http://kokucheese.com/main/host/#{title}/"
-            b = k.benkyoukai
+      begin
+        unless site.blank? || title.blank?
+          b = Benkyoukai.site(site).title(title).first
+          unless b
+            case site
+            when KOKUCHEESE
+              k = Kokucheese.new title
+              b = k.benkyoukai
+            end
           end
         end
+      rescue
+        b = nil
       end
       b
     end

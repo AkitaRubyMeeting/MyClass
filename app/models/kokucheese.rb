@@ -3,8 +3,17 @@ class Kokucheese
   attr_reader :url
   attr_reader :title, :ics, :index_url, :prefecture, :description
   
-  def initialize url
-    @url = url
+  def initialize arg
+    case arg
+    when /^http:\/\//i
+      @url = arg
+    when String
+      @url = "http://kokucheese.com/main/host/#{arg}/"
+      @index_url = @url
+      @title = arg
+    else
+      raise "Invalid argument #{arg}"
+    end
     analize
   end
   
@@ -19,7 +28,12 @@ class Kokucheese
   private
 
   def analize
-    @index_url, @title = get_index_url
+    if @index_url.nil? || @title.nil?
+      @index_url, @title = get_index_url
+      unless @index_url && @title
+        raise "Couldn't get title"
+      end
+    end
     make_ical get_events
   end
   
@@ -53,9 +67,7 @@ class Kokucheese
   
   def get_event url
     doc = Nokogiri::HTML(open(url))
-#p doc
     doc.search("table.indexTable").each do |table|
-#p table
       table.search("tr").each do |tr|
         p tr.search("th").inner_text
         p tr.search("td").inner_text
@@ -69,7 +81,7 @@ class Kokucheese
 
     a = doc.search("a").map do |a|
       url = a["href"]
-    if /http:\/\/kokucheese.com\/main\/host\/([^\/]+)/ =~ url
+      if /http:\/\/kokucheese.com\/main\/host\/([^\/]+)/ =~ url
         [url, URI.unescape($1)]
       end
     end.select{|a| a}

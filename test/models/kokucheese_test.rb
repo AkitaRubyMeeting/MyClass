@@ -18,4 +18,11 @@ class KokucheeseTest < ActiveSupport::TestCase
     assert_not_nil b.ics
   end
 
+  test "it should get by title" do
+    k = Kokucheese.new "Akita.m"
+    assert_equal "http://kokucheese.com/main/host/Akita.m/" ,k.index_url
+    assert_equal "Akita.m", k.title
+    assert_not_nil k.ics
+  end
+
 end
