@@ -5,8 +5,10 @@ class CalendarController < ApplicationController
     @title = params["title"]
     @benkyoukai = nil
     unless @site.blank? || @title.blank?
-      @benkyoukai = Benkyoukai.site(@site).title(@title).first
-      @download_url = calendar_download_url(@benkyoukai.site, @benkyoukai.title.gsub(/\./, "%2E"), format:"ics")
+      @benkyoukai = Benkyoukai.benkyoukai_with_site_and_title @site, @title
+      if @benkyoukai
+        @download_url = calendar_download_url(@benkyoukai.site, @benkyoukai.title.gsub(/\./, "%2E"), format:"ics")
+      end
     end
     @sites = Benkyoukai.supported_sites
   end
@@ -19,7 +21,7 @@ class CalendarController < ApplicationController
     if benkyoukai
       redirect_to calendar_index_path site:benkyoukai.site, title:benkyoukai.title
     else
-      redirect_to calendar_index_path
+      redirect_to calendar_index_path(site:site, title:title), alert: "#{title}は見つかりませんでした"
     end
   end
   
@@ -27,7 +29,7 @@ class CalendarController < ApplicationController
     site = params["site"]
     title = params["title"]
     benkyoukai = Benkyoukai.benkyoukai_with_site_and_title site, title
-    
+
     if benkyoukai
       render text: benkyoukai.ics
     else
