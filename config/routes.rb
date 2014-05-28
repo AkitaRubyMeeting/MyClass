@@ -1,6 +1,9 @@
 Mybenkyoukai::Application.routes.draw do
 
-  get "calendar/index"
+  get "calendar/index", as: :calendar_index
+  get "calendar/download/:site/:title" => "calendar#download", as: :calendar_download
+  post "calendar/make", as: :calendar_make
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

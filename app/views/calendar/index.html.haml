@@ -1,2 +1,34 @@
-%h1 Calendar#index
-%p Find me in app/views/calendar/index.html.haml
+%h1 毎勉強会
+
+.summary
+  毎勉強会は勉強会などのイベント開催日をサービスしてるサイトからイベントを取得しカレンダー形式(ics)のデータを提供するサービスです。
+%h2 使い方
+.usage
+  現在対応しているサービスは#{link_to "こくちーず", "http://kokucheese.com", target:"_blank"}のみです。
+  %br
+  勉強会の名称にこくちーずの主催にある名称を入力します。
+  %br
+  該当する勉強会があると、URLが表示されます。
+  %br
+  Macのカレンダーアプリの場合は、ファイルメニューから新規参照カレンダー... で表示されるダイアログのカレンダーのURLに入力します。
+  %br
+  %br
+
+.form
+  = form_tag calendar_make_path do
+    .field
+      = label_tag :site, "サービス"
+      = select_tag :site, options_for_select(@sites, @site)
+    .field
+      = label_tag :title, "勉強会の名称"
+      = text_field_tag :title, @title
+    .actions
+      = submit_tag "検索"
+    
+
+- if @benkyoukai
+  #{@benkyoukai.title}は以下のURLを購読して下さい。
+  %br
+  = link_to @download_url, @download_url
+  %br
+  更新日 #{@benkyoukai.updated_at}
