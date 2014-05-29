@@ -34,6 +34,28 @@ class Benkyoukai < ActiveRecord::Base
     end
   
 
+    def update_all
+      Benkyoukai.all.each do |b|
+        b.update
+      end
+    end
+
   end
       
+
+  def update
+    service.new(self).update
+  end
+
+
+  private
+
+    def service
+      case site
+      when KOKUCHEESE
+        Kokucheese
+      else
+        nil
+      end
+    end
 end

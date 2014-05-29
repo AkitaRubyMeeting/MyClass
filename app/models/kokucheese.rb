@@ -2,6 +2,7 @@ class Kokucheese
 
   attr_reader :url
   attr_reader :title, :ics, :index_url, :prefecture, :description
+  attr_reader :benkyoukai
   
   def initialize arg
     case arg
@@ -11,6 +12,10 @@ class Kokucheese
       @url = "http://kokucheese.com/main/host/#{arg}/"
       @index_url = @url
       @title = arg
+    when Benkyoukai
+      @benkyoukai = arg
+      @index_url = @benkyoukai.source_url
+      @title = @benkyoukai.title
     else
       raise "Invalid argument #{arg}"
     end
@@ -18,11 +23,19 @@ class Kokucheese
   end
   
   def benkyoukai
-    b = Benkyoukai.site(Benkyoukai::KOKUCHEESE).title(title).first
-    unless b
-      b = Benkyoukai.create(site:Benkyoukai::KOKUCHEESE, title:title, source_url:index_url, ics:ics, prefecture:prefecture)
+    unless @benkyoukai
+      @benkyoukai = Benkyoukai.site(Benkyoukai::KOKUCHEESE).title(title).first
+      unless @benkyoukai
+        @benkyoukai = Benkyoukai.create(site:Benkyoukai::KOKUCHEESE, title:title, source_url:index_url, ics:ics, prefecture:prefecture)
+      end
     end
-    b
+    @benkyoukai
+  end
+  
+  def update
+    b = benkyoukai
+    b.ics = ics
+    b.save
   end
 
   private

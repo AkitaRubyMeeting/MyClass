@@ -25,4 +25,11 @@ class KokucheeseTest < ActiveSupport::TestCase
     assert_not_nil k.ics
   end
 
+  test "it should be able to initialize with benkyoukai" do
+    k = Kokucheese.new "Akita.m"
+    b = k.benkyoukai
+    k2 = Kokucheese.new b
+    assert_not_nil k2
+  end
+
 end

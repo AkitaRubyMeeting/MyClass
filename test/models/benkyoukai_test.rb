@@ -12,4 +12,9 @@ class BenkyoukaiTest < ActiveSupport::TestCase
     assert_nil b
   end
 
+  test "benkyoukai should update" do
+    b = Benkyoukai.benkyoukai_with_site_and_title Benkyoukai::KOKUCHEESE, "Akita.m"
+    assert_nothing_raised { b.update }
+  end
+
 end
