@@ -4,6 +4,7 @@ class Benkyoukai < ActiveRecord::Base
   scope :title, lambda{|t| where("title = ?", t) }
   
   KOKUCHEESE = "kokucheese"
+  DOORKEEPER = "doorkeeper"
   
   class << self
   
