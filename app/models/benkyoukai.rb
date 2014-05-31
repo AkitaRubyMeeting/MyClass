@@ -11,6 +11,7 @@ class Benkyoukai < ActiveRecord::Base
     def supported_sites
       [
         ["こくちーず", KOKUCHEESE],
+        ["Doorkeeper", DOORKEEPER],
       ]
     end
     
@@ -25,10 +26,14 @@ class Benkyoukai < ActiveRecord::Base
             when KOKUCHEESE
               k = Kokucheese.new title
               b = k.benkyoukai
+            when DOORKEEPER
+              d = Doorkeeper.new title
+              b = d.benkyoukai
             end
           end
         end
-      rescue
+      rescue => e
+p e
         b = nil
       end
       b
