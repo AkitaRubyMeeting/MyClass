@@ -2,7 +2,7 @@
 
 毎勉強会はAkita Ruby Meeting #8でAkita.m のイベントをこくちーずから拾ってiCal形式にするコードを書いたのを新たにサービスとして立ち上げた物です。
 
-[毎勉強会](http://mybenkyaoukai.herokuapp.com)
+[毎勉強会](http://mybenkyoukai.herokuapp.com)
 
 
 ---
