@@ -1,5 +1,7 @@
 class Benkyoukai < ActiveRecord::Base
 
+  validates_uniqueness_of :title, :scope => :site
+
   scope :site, lambda{|s| where("site = ?", s) }
   scope :title, lambda{|t| where("title = ?", t) }
   
@@ -60,6 +62,8 @@ p e
       case site
       when KOKUCHEESE
         Kokucheese
+      when DOORKEEPER
+        Doorkeeper
       else
         nil
       end

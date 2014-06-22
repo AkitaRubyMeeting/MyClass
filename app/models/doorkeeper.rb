@@ -28,6 +28,12 @@ class Doorkeeper
     @benkyoukai
   end
   
+  def update
+    b = benkyoukai
+    b.ics = ics
+    b.save
+  end
+
   
 
   private

@@ -29,4 +29,16 @@ class DoorkeeperTest < ActiveSupport::TestCase
     assert_not_nil b.ics
   end
 
+  test "benkyoukai should be unique" do
+    k = Doorkeeper.new "Akita Ruby Meeting(秋田Rubyお楽しみ会)"
+    c = Benkyoukai.all.count
+    b = k.benkyoukai
+    assert_equal c + 1, Benkyoukai.all.count
+    
+    k = Doorkeeper.new "Akita Ruby Meeting"
+    b = k.benkyoukai
+
+    assert_equal c + 1, Benkyoukai.all.count
+  end
+
 end
